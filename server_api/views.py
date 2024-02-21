@@ -1,13 +1,14 @@
 from fastapi import FastAPI, BackgroundTasks
 import subprocess, os, sys
 from server_api.helper.get_directory_files import list_files
-from server_api.helper.create_zip import create_zip
+from server_api.helper.create_zip import create_zip, create_filename
 from fastapi.responses import FileResponse, JSONResponse
 from server_api.api_models.post_models import TextToSpeechInput
 from server_api.helper.gen_random_hex import generate_hex_string
 from server_api.helper.file_handler import remove_file, delete_directory
 server_base_url = "http://127.0.0.1:8000"
 app = FastAPI()
+downloaded_files = []
 
 @app.get("/")
 async def read_root():
@@ -30,14 +31,15 @@ async def text_to_speech(textToSpeechInput: TextToSpeechInput):
         # Check if the command was successful
         if result.returncode == 0:
             files = list_files(output_dir)
-            zip_file = f"./server_api/tts_results_zip/{generate_hex_string(128)}.zip"
+            fname = f"{generate_hex_string(128)}.zip"
+            zip_file = f"./server_api/tts_results_zip/{fname}"
             
             create_zip(zip_file, files)
             error = delete_directory(output_dir)
             if error:
                 print(f"could not delete output dir {error}")
 
-            return JSONResponse({"download": f"{server_base_url}/api/tts-results/zip/{zip_file}", "error": ""}, status_code=200)
+            return JSONResponse({"download": f"{server_base_url}/api/tts-results/zip/{fname}", "error": ""}, status_code=200)
         else:
             if os.path.exists(output_dir): delete_directory(output_dir)
             print("Error:", result.stderr)
@@ -50,8 +52,11 @@ async def text_to_speech(textToSpeechInput: TextToSpeechInput):
 @app.get("/api/tts-results/zip/{zip_file}")
 async def read_item(zip_file: str, background_tasks: BackgroundTasks):
     fpath = os.path.join(os.path.abspath('server_api/tts_results_zip'), zip_file)
+
     if not os.path.exists(fpath):
         return 401
-    else:
+    else:        
+        
+        response = FileResponse(fpath, status_code=200, filename=create_filename(), media_type="audio/wav")
         background_tasks.add_task(remove_file, fpath)
-        return FileResponse(fpath, status_code=200, filename=fpath.split('.')[-1], media_type="audio/wav")
+        return response

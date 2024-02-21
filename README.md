@@ -4,10 +4,11 @@ Tortoise is a text-to-speech program built with the following priorities:
 
 1. Strong multi-voice capabilities.
 2. Highly realistic prosody and intonation.
-   
+
 This repo contains all the code needed to run Tortoise TTS in inference mode.
 
 Manuscript: https://arxiv.org/abs/2305.07243
+
 ## Hugging Face space
 
 A live demo is hosted on Hugging Face Spaces. If you'd like to avoid a queue, please duplicate the Space and add a GPU. Please note that CPU-only spaces do not work for this demo.
@@ -15,6 +16,7 @@ A live demo is hosted on Hugging Face Spaces. If you'd like to avoid a queue, pl
 https://huggingface.co/spaces/Manmay/tortoise-tts
 
 ## Install via pip
+
 ```bash
 pip install tortoise-tts
 ```
@@ -31,7 +33,7 @@ I'm naming my speech-related repos after Mojave desert flora and fauna. Tortoise
 is insanely slow. It leverages both an autoregressive decoder **and** a diffusion decoder; both known for their low
 sampling rates. On a K80, expect to generate a medium sized sentence every 2 minutes.
 
-well..... not so slow anymore now we can get a **0.25-0.3 RTF** on 4GB vram and with streaming we can get < **500 ms** latency !!! 
+well..... not so slow anymore now we can get a **0.25-0.3 RTF** on 4GB vram and with streaming we can get < **500 ms** latency !!!
 
 ## Demos
 
@@ -53,6 +55,7 @@ First, install miniconda: https://docs.conda.io/en/latest/miniconda.html
 Then run the following commands, using anaconda prompt as the terminal (or any other terminal configured to work with conda)
 
 This will:
+
 1. create conda environment with minimal dependencies specified
 1. activate the environment
 1. install pytorch with the command provided here: https://pytorch.org/get-started/locally/
@@ -63,7 +66,7 @@ This will:
 ```shell
 conda create --name tortoise python=3.9 numba inflect
 conda activate tortoise
-conda install pytorch torchvision torchaudio pytorch-cuda=11.7 -c pytorch -c nvidia
+conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.7 -c pytorch -c nvidia
 conda install transformers=4.29.2
 git clone https://github.com/neonbjb/tortoise-tts.git
 cd tortoise-tts
@@ -94,6 +97,7 @@ docker run --gpus all \
     -v /root:/work \
     -it tts
 ```
+
 This gives you an interactive terminal in an environment that's ready to do some tts. Now you can explore the different interfaces that tortoise exposes for tts.
 
 For example:
@@ -132,13 +136,14 @@ pip install .
 Be aware that DeepSpeed is disabled on Apple Silicon since it does not work. The flag `--use_deepspeed` is ignored.
 You may need to prepend `PYTORCH_ENABLE_MPS_FALLBACK=1` to the commands below to make them work since MPS does not support all the operations in Pytorch.
 
-
 ### do_tts.py
 
 This script allows you to speak a single phrase with one or more voices.
+
 ```shell
 python tortoise/do_tts.py --text "I'm going to speak this" --voice random --preset fast
 ```
+
 ### faster inference read.py
 
 This script provides tools for reading large amounts of text.
@@ -195,6 +200,7 @@ reference_clips = [utils.audio.load_audio(p, 22050) for p in clips_paths]
 tts = api.TextToSpeech(half=True)
 pcm_audio = tts.tts_with_preset("your text here", voice_samples=reference_clips, preset='fast')
 ```
+
 for Faster runs use all three:
 
 ```python

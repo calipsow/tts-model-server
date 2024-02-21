@@ -1,4 +1,4 @@
-import zipfile, os
+import zipfile, os, datetime
 
 def create_zip(zip_name, files):
     print('creating zip archive')
@@ -12,3 +12,11 @@ def create_zip(zip_name, files):
             zipf.write(file, arcname=file_name)
 
     print('zip archive created')
+
+def create_filename():
+    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    
+    # String mit Präfix und aktueller Uhrzeit zusammenstellen
+    filename = f"text-to-speech-{timestamp}_.zip"
+    
+    return filename

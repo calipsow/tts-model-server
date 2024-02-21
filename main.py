@@ -20,5 +20,5 @@ def run_setup():
         print(f'failed to run setup {e}')
 
 if __name__ == "__main__":
-    run_setup()
+    # run_setup()
     run_server_api()
