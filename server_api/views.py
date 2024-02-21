@@ -6,6 +6,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from server_api.api_models.post_models import TextToSpeechInput
 from server_api.helper.gen_random_hex import generate_hex_string
 from server_api.helper.file_handler import remove_file, delete_directory
+from server_api.routes.advanced_tts_api import initialize_advanced_server_routes
 server_base_url = "http://127.0.0.1:8000"
 app = FastAPI()
 downloaded_files = []
@@ -60,3 +61,5 @@ async def read_item(zip_file: str, background_tasks: BackgroundTasks):
         response = FileResponse(fpath, status_code=200, filename=create_filename(), media_type="audio/wav")
         background_tasks.add_task(remove_file, fpath)
         return response
+    
+initialize_advanced_server_routes(app=app)
