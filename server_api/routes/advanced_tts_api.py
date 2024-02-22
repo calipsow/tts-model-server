@@ -7,6 +7,7 @@ async def txt_file_based_tts(tts_input: TextToSpeechInput):
 
 
 def initialize_advanced_server_routes(app: FastAPI):
-    app.post('/a')(txt_file_based_tts)
+    app.post("/a")(txt_file_based_tts)
 
-__all__ = ['initialize_advanced_server_routes']
+
+__all__ = ["initialize_advanced_server_routes"]

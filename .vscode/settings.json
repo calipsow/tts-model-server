@@ -1,3 +1,5 @@
 {
-  "cSpell.words": ["uvicorn"]
+  "cSpell.words": ["uvicorn"],
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoImportCompletions": true
 }

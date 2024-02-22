@@ -1,5 +1,6 @@
 import random
 
+
 def generate_hex_string(bits: int = 32):
     # Generieren einer zufälligen Zahl im Bereich von 0 bis 2^32 - 1
     random_number = random.getrandbits(bits)

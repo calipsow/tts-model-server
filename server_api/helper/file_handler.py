@@ -1,9 +1,11 @@
 import os, shutil
 
+
 def remove_file(file_path: str):
     """Hintergrundfunktion zum Löschen einer Datei."""
     if os.path.exists(file_path):
         os.remove(file_path)
+
 
 def delete_directory(dir_path):
     # Überprüfen, ob das Verzeichnis existiert
